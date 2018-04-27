@@ -1,0 +1,199 @@
+---
+title: "Neural Control of Speed in Human Walking"
+author: |
+        &nbsp;
+
+        ###by **Farzad Ehtemam**
+        
+output:
+  revealjs::revealjs_presentation:
+    theme: sky
+    mathjax: local
+    self_contained: false
+    reveal_options:
+      slideNumber: true
+      previewLinks: true
+---
+
+## Gait cycle
+
+![1](fig_01.png)
+
+
+## Gait cycle
+
+![2](fig_02_1.png)
+
+![3](fig_02_2.png)
+
+## Control of gait
+
+- How CNS continuously adjusts control of walking over the gait cycle to ensure stable movement
+
+```{r c1, echo=FALSE, cache=FALSE, out.width = '75%'}
+knitr::include_graphics('fig_03.png')
+```
+
+- Muscle activations & speed
+- Small adjustments
+
+## Problem statement
+
+&nbsp;
+
+- How do small changes in speed affect modulations of muscle activations?
+
+
+## System identification
+
+- Application of perturbations
+    * Cause and effect relationship
+- Joint input-output method
+    * $T_{vy} = P T_{vu}$ ; $T_{mu} = F T_{my}$
+- Short latency inference
+
+```{r c3, echo=FALSE, cache=FALSE, out.width = '75%'}
+knitr::include_graphics('fig_03.png')
+```
+
+## LTP systems and HTFs
+
+&nbsp;
+
+```{r c5, echo=FALSE, cache=FALSE, out.width = '30%'}
+knitr::include_graphics('gif_1.gif')
+```
+```{r c6, echo=FALSE, cache=FALSE, out.width = '26%'}
+knitr::include_graphics('fig_06.png')
+```
+```{r c7, echo=FALSE, cache=FALSE, out.width = '30%'}
+knitr::include_graphics('gif_2.gif')
+```
+
+- For walking frequency  $f_0$ , the $k-th$ mode of HTF describes how input at frequency  $f$  is mapped to output at frequency $f +kf_0$
+
+- Each mode of the HTF is described by its own gain and phase functions.
+
+## Phase-dependent IRF (φIRF)
+```{r c8, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE}
+
+require(colorRamps)
+require(colorspace)
+require(plotly)
+
+setwd("/home/feri/Documents/0PhD/Data/VSP_m")
+
+airt <- vector("list", 4)
+
+airt[[1]] <- read.csv("airf1_t.csv", header = FALSE)
+airt[[2]] <- read.csv("airf2_t.csv", header = FALSE)  # averaged IRFs for all phases of stimulus (not just one slice)
+airt[[3]] <- read.csv("airf3_t.csv", header = FALSE) 
+airt[[4]] <- read.csv("airf4_t.csv", header = FALSE)
+
+mdf <- read.csv("mdf.csv", header = FALSE, stringsAsFactors = FALSE)
+toff <- trunc(mean(mdf[,1])*10^3)/10^3 
+
+cont <- lapply(airt, as.matrix)
+qmin <- -0.5 + toff -0.5
+qmax <- 1
+q1 <- as.data.frame(seq(qmin, toff, length.out = dim(cont[[2]])[1]))
+q2p <- as.data.frame(seq(qmin, qmax, length.out = dim(cont[[2]])[2]))
+
+qq1 <- as.numeric(unlist(q1))
+qq2p <- as.numeric(unlist(q2p))
+
+IRF <- as.matrix(airt[[2]])
+
+plot_ly(x = rev(qq2p), y = qq1, z = IRF, type = "surface", opacity = 1, colors = diverge_hcl(121, c = 120, l = c(20,90), power = 1.0)) %>%
+  layout(scene = list(
+      xaxis = list(title = "Normalized response time"),
+      yaxis = list(title = "Perturbation phase"),
+      zaxis = list(title = "IRF")
+    ))
+
+```
+
+##
+
+```{r c9, echo=FALSE, cache=FALSE, out.width = '50%'}
+knitr::include_graphics('img1.png')
+```
+
+##
+
+```{r c10, echo=FALSE, cache=FALSE, out.width = '55%'}
+knitr::include_graphics('img2.png')
+```
+
+## Mechanical perturbations of treadmill speed
+
+- How do small changes in treadmill speed affect kinematic responses and modulations of muscle activations?
+
+```{r c20, echo=FALSE, cache=FALSE, out.width = '75%'}
+knitr::include_graphics('fig_03.png')
+```
+
+## Methods
+
+- Perturbations of treadmill belt (filtered white noise)
+
+- Average speed: 1.3 m/s
+
+- 15 subjects
+
+- 2 perturbation amplitudes
+
+- 8 randomized trials 
+
+- EMG from 14 muscles
+
+## Results
+
+Single-support kinematics
+
+```{r c21, echo=FALSE, cache=FALSE, out.width = '85%'}
+knitr::include_graphics('fig5_1.png')
+```
+
+## single-support EMG
+
+```{r c22, echo=FALSE, cache=FALSE, out.width = '90%'}
+knitr::include_graphics('fig5_2.png')
+```
+
+## double-support kinematics
+
+```{r c23, echo=FALSE, cache=FALSE, out.width = '90%'}
+knitr::include_graphics('fig5_3.png')
+```
+
+## double-support EMG
+
+```{r c24, echo=FALSE, cache=FALSE, out.width = '90%'}
+knitr::include_graphics('fig5_4.png')
+```
+
+## Discussion
+
+&nbsp;
+
+- Both kinematic and EMG responses
+
+- Single-support and double-support responses
+
+- Responses in all leg muscles for both amplitudes
+
+- Assumption of local limit cycle based on amplitude analysis
+
+## Take-away messages
+
+&nbsp;
+
+- Responses to small continuous perturbations
+
+- Effect of amplitude
+
+
+
+
+
