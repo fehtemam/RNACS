@@ -48,8 +48,7 @@ knitr::include_graphics('fig_03.png')
 - Application of perturbations
     * Cause and effect relationship
 - Joint input-output method
-    * $T_{vy} = P T_{vu}$ ; $T_{mu} = F T_{my}$
-- Short latency inference
+    * $T_{mu} = F T_{my}$
 
 ```{r c3, echo=FALSE, cache=FALSE, out.width = '75%'}
 knitr::include_graphics('fig_03.png')
