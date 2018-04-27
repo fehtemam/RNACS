@@ -43,7 +43,6 @@ knitr::include_graphics('fig_03.png')
 
 - How do small changes in speed affect modulations of muscle activations?
 
-
 ## System identification
 
 - Application of perturbations
